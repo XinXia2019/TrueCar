@@ -4,6 +4,9 @@ from plotly.graph_objs import *
 import plotly.graph_objs as go
 import plotly.express as px
 init_notebook_mode(connected=True)
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib import cm
 
 def plot_box(y,title_ = None,x_axis = None,y_axis = None):
     data = [go.Box(y=y)]                       
@@ -72,9 +75,15 @@ def plot_bar(df,title_ = None,x_axis = None,y_axis = None): # df should take dat
     
 def plot_bar_v(df,title_ = None,x_axis = None,y_axis = None,height= 1000): # df should take dataframe with first column as "Type" and second column as "Frequency"
     
+    x = df.iloc[:,0]
+    y = df.iloc[:,1]
+    
     data=[go.Bar(
-    x = df.iloc[:,1],
-    y = df.iloc[:,0],orientation='h')]    
+    x = y,
+    y = x,
+    orientation='h',
+    text = y,
+    textposition='auto')]
     
     layout = go.Layout(
     title= title_,
@@ -105,6 +114,7 @@ def plot_bar_v(df,title_ = None,x_axis = None,y_axis = None,height= 1000): # df 
     width=900)
     iplot(fig)
     
+    
 def plot_histgram(x, title_ = None, x_axis = None, y_axis = None):
 
     data = [go.Histogram(x = x)]
@@ -134,8 +144,40 @@ def plot_histgram(x, title_ = None, x_axis = None, y_axis = None):
     fig = go.Figure(data=data, layout=layout)
     iplot(fig)
     
+def plot_scatter(df,title_= None,x_axis = None, y_axis = None, mode= 'markers'):
     
+    x= df.iloc[:,0]
+    y = df.iloc[:,1]
     
+    data=[go.Scatter(
+    x= x,
+    y= y,
+    mode = mode)]
+    
+    layout = go.Layout(
+    title= title_,
+    xaxis=dict(
+        title = x_axis,
+        tickfont=dict(
+            size=14,
+            color='rgb(107, 107, 107)'
+        ),
+        tickvals = x
+    ),
+    yaxis=dict(
+        title= y_axis,
+        titlefont=dict(
+            size=16,
+            color='rgb(107, 107, 107)'
+        ),
+        tickfont=dict(
+            size=14,
+            color='rgb(107, 107, 107)'
+        )
+      )
+    )
+    fig = go.Figure(data = data, layout=layout)
+    fig.show()    
     
 def plot_bubble(df, title_ = None, xaxis_ = None, yaxis_ = None):
     fig = px.scatter(df, x="indiv_transaction_amt", y = 'donation_count',
@@ -163,3 +205,24 @@ def check_missing(df,title_ = None,x_axis = None,y_axis = None, do_plot = False)
         plot_bar(missing_percent,title_, x_axis, y_axis)
     else:
         return missing_percent
+    
+    
+def check_correlation(df):
+    plt.figure(figsize=(12, 10))
+    corr = df.corr()
+    
+    ax = sns.heatmap(
+        corr, 
+        vmin = 0, vmax=1, center=0.5,
+        cmap= "Blues",
+        square=True,  linewidths=.5
+    )
+    ax.set_xticklabels(
+        ax.get_xticklabels(),
+        rotation=45,
+        horizontalalignment='right'
+    );
+    
+    plt.title('Correlation Matrix Numeric')
+    plt.show()    
+    
