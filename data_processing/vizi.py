@@ -36,7 +36,7 @@ def plot_box(y,title_ = None,x_axis = None,y_axis = None):
     iplot(fig)
 
 
-def plot_bar(df,title_ = None,x_axis = None,y_axis = None): # df should take dataframe with first column as "Type" and second column as "Frequency"
+def plot_bar(df,title_ = None,x_axis = None,y_axis = None,height = None,width = None): # df should take dataframe with first column as "Type" and second column as "Frequency"
     
     x = df.iloc[:,0]
     y = df.iloc[:,1]
@@ -70,7 +70,9 @@ def plot_bar(df,title_ = None,x_axis = None,y_axis = None): # df should take dat
     )
 
     fig = go.Figure(data=data, layout=layout)
-    #iplot(fig, filename='style-bar')
+    fig.update_layout(
+    height=height,
+    width=width)
     fig.show()
     
 def plot_bar_v(df,title_ = None,x_axis = None,y_axis = None,height= 1000): # df should take dataframe with first column as "Type" and second column as "Frequency"
@@ -196,13 +198,13 @@ def plot_bubble(df, title_ = None, xaxis_ = None, yaxis_ = None):
     )
     fig.show()
     
-def check_missing(df,title_ = None,x_axis = None,y_axis = None, do_plot = False):
+def check_missing(df,title_ = None,x_axis = None,y_axis = None, do_plot = False,height = None, weight = None):
     missing_percent = round(df.isnull().sum() * 100 /df.shape[0],2)
     missing_percent = pd.DataFrame(missing_percent).reset_index()
     missing_percent.columns = ['features','percent']
     missing_percent = missing_percent.sort_values(by = 'percent').reset_index(drop= True)
     if do_plot:
-        plot_bar(missing_percent,title_, x_axis, y_axis)
+        plot_bar(missing_percent,title_, x_axis, y_axis,height,weight)
     else:
         return missing_percent
     
