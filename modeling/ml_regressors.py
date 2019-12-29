@@ -23,8 +23,8 @@ warnings.filterwarnings("ignore")
 
 #Linear
 reg_linear = LinearRegression()
-reg_ridge = Ridge(alpha=0.5)
-reg_lasso = Lasso(alpha=0.5)
+reg_ridge = Ridge(alpha=0.1)
+reg_lasso = Lasso(alpha=0.1)
 #Nearest Neighbors
 reg_knn = KNeighborsRegressor()
 #Svm regressors
@@ -36,7 +36,7 @@ reg_gbr = GradientBoostingRegressor(random_state=42)
 reg_xgb = XGBRegressor(random_state=42)
 
 ###read dataset
-df = pd.read_csv('features.csv')
+df = pd.read_csv('../data/featuressimple.csv')
 X = df.drop('vehicle_list_price',axis =1)
 y = df.vehicle_list_price
 
