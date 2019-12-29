@@ -52,5 +52,5 @@ for idx in range(len(data_year)):
     
 print("Saving to csv file...")
 df = pd.DataFrame(data_all)
-df.to_csv("true_car_9720.csv",index = False)
+df.to_csv("../data/true_car_9720.csv",index = False)
 print("Done")
